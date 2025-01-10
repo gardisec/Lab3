@@ -1,0 +1,19 @@
+# ninja log v6
+1	938	1736504969424271603	CMakeFiles/Lab3.dir/classes/arr.cpp.o	bcd423cab4408ba2
+1	1080	1736504969424271603	CMakeFiles/Lab3.dir/classes/hashMap.cpp.o	a482e23f23d9bd65
+2	1102	1736504969425271603	CMakeFiles/Lab3.dir/classes/list.cpp.o	2afdbd995e0c9657
+938	1636	1736504970361271577	CMakeFiles/Lab3.dir/classes/Pair.cpp.o	1dddcfe8357625d8
+1080	1665	1736504970503271573	CMakeFiles/Lab3.dir/classes/singleConnList.cpp.o	28c167bcc144ed10
+1102	1704	1736504970525271573	CMakeFiles/Lab3.dir/classes/Stack.cpp.o	b3ef1ea44b979bc5
+1638	2098	1736504971061271558	CMakeFiles/Lab3.dir/classes/Set.cpp.o	edf1a39769a847fb
+1704	2186	1736504971127271556	CMakeFiles/Lab3.dir/class_func/arr_funcs.cpp.o	f76e992ff21f385c
+1665	2355	1736504971088271558	CMakeFiles/Lab3.dir/classes/ComplTree.cpp.o	58e9fa21b5aee8d6
+2098	2640	1736504971521271546	CMakeFiles/Lab3.dir/class_func/generalFuncs.cpp.o	d994f7d2dd3542a9
+2186	2758	1736504971609271543	CMakeFiles/Lab3.dir/class_func/hashMap_funcs.cpp.o	bb6c26e6b62d6f6e
+2355	2882	1736504971778271539	CMakeFiles/Lab3.dir/class_func/list_funcs.cpp.o	f6b1f441a734f434
+2758	3291	1736504972181271528	CMakeFiles/Lab3.dir/class_func/stack_funcs.cpp.o	860c3e77c03075e9
+2642	3349	1736504972065271531	CMakeFiles/Lab3.dir/class_func/queue_funcs.cpp.o	1923d0ac3270d290
+2882	3472	1736504972305271524	CMakeFiles/Lab3.dir/class_func/set_funcs.cpp.o	4b3768db798fff6a
+3291	3809	1736504972714271513	CMakeFiles/Lab3.dir/class_func/tree_funcs.cpp.o	3147f05f79a12a35
+3349	3883	1736504972773271512	CMakeFiles/Lab3.dir/main.cpp.o	d65feba0e8a82504
+3884	3978	1736504973307271497	Lab3	98ff9ed4bab8cdea
