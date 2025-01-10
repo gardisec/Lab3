@@ -1,8 +1,7 @@
 #include "tree_funcs.h"
 
-
 Tree* getTree(fstream& file) {
-    size_t valueLen;
+    uint32_t valueLen;
     if (!file.read(reinterpret_cast<char*>(&valueLen), sizeof(valueLen))) {
         throw runtime_error("Failed to read tree value length");
     }
@@ -19,8 +18,8 @@ Tree* getTree(fstream& file) {
         Tree* current = nodeQueue.getFirst();
         nodeQueue.pop();
 
-        size_t leftValueLen;
-        if (file.read(reinterpret_cast<char*>(&leftValueLen), sizeof(leftValueLen))) {//проходимся по левому потомку
+        uint32_t leftValueLen;
+        if (file.read(reinterpret_cast<char*>(&leftValueLen), sizeof(leftValueLen))) {
             if (leftValueLen > 0) {
                 string leftValue(leftValueLen, '\0');
                 file.read(&leftValue[0], leftValueLen);
@@ -29,8 +28,9 @@ Tree* getTree(fstream& file) {
                 nodeQueue.push(leftChild);
             }
         }
-        size_t rightValueLen;
-        if (file.read(reinterpret_cast<char*>(&rightValueLen), sizeof(rightValueLen))) {//проходимся по правому потомку
+
+        uint32_t rightValueLen;
+        if (file.read(reinterpret_cast<char*>(&rightValueLen), sizeof(rightValueLen))) {
             if (rightValueLen > 0) {
                 string rightValue(rightValueLen, '\0');
                 file.read(&rightValue[0], rightValueLen);
@@ -59,18 +59,17 @@ void treeToFile(Tree* tree, fstream& file) {
         file.write(reinterpret_cast<const char*>(&valueLen), sizeof(valueLen));
         file.write(value.c_str(), valueLen);
 
-
-        if (current->getLeft()) {//записываем левый потомок
+        if (current->getLeft()) {
             nodeQueue.push(current->getLeft());
         } else {
-            valueLen = 0;  //если нет левого потомка, записываем длину 0
+            valueLen = 0;
             file.write(reinterpret_cast<const char*>(&valueLen), sizeof(valueLen));
         }
 
-        if (current->getRight()) { //записываем правый потомок
+        if (current->getRight()) {
             nodeQueue.push(current->getRight());
         } else {
-            valueLen = 0;  //если нет правого потомка, записываем длину 0
+            valueLen = 0;
             file.write(reinterpret_cast<const char*>(&valueLen), sizeof(valueLen));
         }
     }
@@ -98,12 +97,15 @@ void treeInsert(const request& request) {
 
     try {
         while (true) {
-            size_t nameLen;
+
+            uint32_t nameLen;
             if (!file.read(reinterpret_cast<char*>(&nameLen), sizeof(nameLen))) {
                 break;
             }
+
             string varName(nameLen, '\0');
             file.read(&varName[0], nameLen);
+
             Tree* tree = getTree(file);
 
             if (varName == name) {
@@ -111,13 +113,14 @@ void treeInsert(const request& request) {
                 tree->insertToTree(value);
             }
 
-            size_t prefixedNameLen = varName.size();
+            uint32_t prefixedNameLen = varName.size();
             tmpFile.write(reinterpret_cast<const char*>(&prefixedNameLen), sizeof(prefixedNameLen));
             tmpFile.write(varName.c_str(), prefixedNameLen);
             treeToFile(tree, tmpFile);
 
             delete tree;
         }
+
         if (!varIsExist) {
             uint32_t nameLen = name.size();
             tmpFile.write(reinterpret_cast<const char*>(&nameLen), sizeof(nameLen));
@@ -167,12 +170,14 @@ void treeComplete(const request& request) {
     }
 
     while (true) {
-        size_t nameLen;
+        uint32_t nameLen;
         if (!file.read(reinterpret_cast<char*>(&nameLen), sizeof(nameLen))) {
             break;
         }
+
         string varName(nameLen, '\0');
         file.read(&varName[0], nameLen);
+
         Tree* tree = getTree(file);
 
         if (varName == name && !found) {
@@ -183,6 +188,7 @@ void treeComplete(const request& request) {
                 cout << name << " is not a complete binary tree\n";
             }
         }
+
         delete tree;
     }
 
@@ -198,6 +204,7 @@ void treeSearch(const request& request) {
     if (request.query.get_size() != 3) {
         throw runtime_error("Wrong command syntax");
     }
+
     string name = request.query[1];
     string value = request.query[2];
     bool found = false;
@@ -211,8 +218,10 @@ void treeSearch(const request& request) {
         if (!file.read(reinterpret_cast<char*>(&nameLen), sizeof(nameLen))) {
             break;
         }
+
         string varName(nameLen, '\0');
         file.read(&varName[0], nameLen);
+
         Tree* tree = getTree(file);
 
         if (varName == name) {
@@ -225,6 +234,7 @@ void treeSearch(const request& request) {
             delete tree;
             break;
         }
+
         delete tree;
     }
 
@@ -237,12 +247,16 @@ void treeSearch(const request& request) {
 
 void printInOrder(Tree* node) {
     if (node == nullptr) return;
+
     printInOrder(node->getLeft());
+
     cout << node->getKey() << " ";
+
     printInOrder(node->getRight());
 }
 
 void printTree(const request& request) {
+
     if (request.query.get_size() != 2) {
         throw runtime_error("Wrong command syntax: Expected tree name");
     }
@@ -250,6 +264,7 @@ void printTree(const request& request) {
     string treeName = request.query[1];
     fstream file(request.file, ios::in | ios::binary);
     bool treeFound = false;
+
     if (!file.is_open()) {
         throw runtime_error("Failed to open file");
     }
@@ -260,8 +275,10 @@ void printTree(const request& request) {
             if (!file.read(reinterpret_cast<char*>(&nameLen), sizeof(nameLen))) {
                 break;
             }
+
             string varName(nameLen, '\0');
             file.read(&varName[0], nameLen);
+
             Tree* tree = getTree(file);
 
             if (varName == treeName) {
@@ -274,8 +291,10 @@ void printTree(const request& request) {
                 delete tree;
                 break;
             }
+
             delete tree;
         }
+
         if (!treeFound) {
             cout << "Tree " << treeName << " not found" << endl;
         }
